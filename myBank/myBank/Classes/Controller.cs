@@ -4,6 +4,7 @@ using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace myBank.Classes
 {
@@ -23,6 +24,21 @@ namespace myBank.Classes
             customers.Add(customer);
         }
 
+        public void DeleteCustomer(Customer customer)
+        {
+            customers.Remove(customer);
+        }
+
+        public void UpdateCustomerListBox(ListBox listBox)
+        {
+            listBox.Items.Clear();
+            foreach (Customer customer in customers)
+            {
+                // Add Customer objects to the ListBox
+                listBox.Items.Add(customer);
+            }
+        }
+
         public void AddAccount(int customerId, Account account)
         {
             // Associate the account with the customer by setting its CustomerId property
@@ -31,9 +47,6 @@ namespace myBank.Classes
             // account.CustomerId = customerId;
             accounts.Add(account);
         }
-
-
-        // Implement other methods like EditCustomer, DeleteCustomer, etc.
 
         // Deposit method
         public void Deposit(int accountId, decimal amount)
@@ -93,6 +106,17 @@ namespace myBank.Classes
             }
         }
 
+        private Customer FindCustomerById(int customerId)
+        {
+            foreach (Customer customer in customers)
+            {
+                if (customer.CustomerId == customerId)
+                {
+                    return customer;
+                }
+            }
+            return null;
+        }
         private Account FindAccountById(int accountId)
         {
             foreach (Account account in accounts)
