@@ -12,17 +12,25 @@ namespace myBank.Classes
         private static int nextCustomerId = 1;
 
         // Properties
-        public int CustomerId { get; set; }
+        public int CustomerId { get; }
         public string Name { get; set; }
         public string ContactDetails { get; set; }
 
+        public bool IsStaff { get; set; }
 
         // Constructor
-        public Customer(string name, string contactDetails)
+        public Customer(string name, string contactDetails, bool isStaff)
         {
             CustomerId = nextCustomerId++;
             Name = name;
             ContactDetails = contactDetails;
+            IsStaff = isStaff;
         }
+
+        public override string ToString()
+        {
+            return $"{CustomerId}: {Name} - {ContactDetails}";
+        }
+
     }
 }
