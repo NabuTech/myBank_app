@@ -1,0 +1,68 @@
+Feature: Transfer money from one Everyday Account to another of the same customer
+
+  Scenario: Jane Doe transfers $100 from her Everyday Account to another of her Everyday Accounts
+    Given Jane Doe has an Everyday Account with a balance of $500
+    And Jane Doe has another Everyday Account with a balance of $200
+    When she transfers $100 from her first Everyday Account to the second
+    Then the balance of her first Everyday Account should be $400
+    And the balance of her second Everyday Account should be $300
+
+  Scenario: Jane Doe tries to transfer $600 from her Everyday Account to another of her Everyday Accounts
+    Given Jane Doe has an Everyday Account with a balance of $500
+    And Jane Doe has another Everyday Account with a balance of $200
+    When she tries to transfer $600 from her first Everyday Account to the second
+    Then the transfer should fail
+    And there should be no change in balances
+
+  Scenario: Jane Doe transfers $0 from her Everyday Account to another of her Everyday Accounts
+    Given Jane Doe has an Everyday Account with a balance of $500
+    And Jane Doe has another Everyday Account with a balance of $200
+    When she transfers $0 from her first Everyday Account to the second
+    Then the transfer should fail
+    And there should be no change in balances
+
+Feature: Transfer money from one Investment Account to another of the same customer
+
+  Scenario: Jane Doe transfers $200 from her Investment Account to another of her Investment Accounts
+    Given Jane Doe has an Investment Account with a balance of $1000
+    And Jane Doe has another Investment Account with a balance of $500
+    When she transfers $200 from her first Investment Account to the second
+    Then the balance of her first Investment Account should be $800
+    And the balance of her second Investment Account should be $700
+
+  Scenario: Jane Doe tries to transfer $1100 from her Investment Account to another of her Investment Accounts
+    Given Jane Doe has an Investment Account with a balance of $1000
+    And Jane Doe has another Investment Account with a balance of $500
+    When she tries to transfer $1100 from her first Investment Account to the second
+    Then the transfer should fail
+    And there should be no change in balances
+
+  Scenario: Jane Doe transfers $0 from her Investment Account to another of her Investment Accounts
+    Given Jane Doe has an Investment Account with a balance of $1000
+    And Jane Doe has another Investment Account with a balance of $500
+    When she transfers $0 from her first Investment Account to the second
+    Then the transfer should fail
+    And there should be no change in balances
+
+Feature: Transfer money from one Omni Account to another of the same customer
+
+  Scenario: Jane Doe transfers $500 from her Omni Account to another of her Omni Accounts
+    Given Jane Doe has an Omni Account with a balance of $1500
+    And Jane Doe has another Omni Account with a balance of $800
+    When she transfers $500 from her first Omni Account to the second
+    Then the balance of her first Omni Account should be $1000
+    And the balance of her second Omni Account should be $1300
+
+  Scenario: Jane Doe tries to transfer $1600 from her Omni Account to another of her Omni Accounts
+    Given Jane Doe has an Omni Account with a balance of $1500
+    And Jane Doe has another Omni Account with a balance of $800
+    When she tries to transfer $1600 from her first Omni Account to the second
+    Then the transfer should fail
+    And there should be no change in balances
+
+  Scenario: Jane Doe transfers $0 from her Omni Account to another of her Omni Accounts
+    Given Jane Doe has an Omni Account with a balance of $1500
+    And Jane Doe has another Omni Account with a balance of $800
+    When she transfers $0 from her first Omni Account to the second
+    Then the transfer should fail
+    And there should be no change in balances
