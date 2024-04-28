@@ -16,11 +16,7 @@ namespace myBank.Classes
         }
 
         // Methods
-        public override string AccountType()
-        {
-            return "Omni";
-        }
-
+        
         public override string AccountDetails()
         {
             return $"Omni Account {AccountId}; Balance: {Balance:C}; Interest Rate: 4%; Overdraft Limit: $100; Fee for Failed Transactions: $10";

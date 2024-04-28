@@ -15,6 +15,7 @@ namespace myBank.Classes
         public int CustomerId { get; set; }
         public string Name { get; set; }
         public string ContactDetails { get; set; }
+        public List<Account> Accounts { get; set; }
 
         public bool IsStaff { get; set; }
 
@@ -25,6 +26,7 @@ namespace myBank.Classes
             Name = name;
             ContactDetails = contactDetails;
             IsStaff = isStaff;
+            Accounts = new List<Account>();
         }
 
         public override string ToString()

@@ -16,11 +16,7 @@ namespace myBank.Classes
         }
 
         // Methods
-        public override string AccountType()
-        {
-            return "Investment";
-        }
-
+        
         public override string AccountDetails()
         {
             return $"Investment Account {AccountId}; Balance: {Balance:C}; Interest Rate: {InterestRate:P}";

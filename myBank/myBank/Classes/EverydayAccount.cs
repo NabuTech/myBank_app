@@ -16,11 +16,7 @@ namespace myBank.Classes
         }
 
         // Methods
-        public override string AccountType()
-        {
-            return "Everyday";
-        }
-
+        
         public override string AccountDetails()
         {
             return $"Everyday Account {AccountId}; Balance: {Balance:C}";
