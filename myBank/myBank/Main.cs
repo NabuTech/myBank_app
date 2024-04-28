@@ -23,9 +23,11 @@ namespace myBank
             customers = new List<Customer>();
 
             controller.UpdateCustomerListBox(listBoxCustomers);
+            PopulateCustomerComboBox();
+
         }
 
-        
+
 
         private void ShowAddCustomerForm(Controller controller, List<Customer> customers)
         {
@@ -88,7 +90,7 @@ namespace myBank
 
         private void Main_Load(object sender, EventArgs e)
         {
-            
+
         }
 
         private void btnAddCustomer_Click(object sender, EventArgs e)
@@ -105,7 +107,7 @@ namespace myBank
         }
 
 
-      
+
 
         private void btnDeleteCustomer_Click(object sender, EventArgs e)
         {
@@ -116,5 +118,75 @@ namespace myBank
         {
             this.Close();
         }
+
+
+        private void PopulateCustomerComboBox()
+        {
+            // Get the list of customers from the controller
+            List<Customer> customers = controller.GetCustomers();
+
+            // Set the data source of the combo box to the list of customers
+            comboDisplayCustomers.DataSource = customers;
+
+            // Set the display member to specify which property of the Customer class to display
+            comboDisplayCustomers.DisplayMember = "Name";
+        }
+
+
+
+
+        private void btnAddAccount_Click(object sender, EventArgs e)
+        {
+            if (comboDisplayCustomers.SelectedItem != null)
+            {
+                Customer selectedCustomer = (Customer)comboDisplayCustomers.SelectedItem;
+                AddAccountForm addAccountForm = new AddAccountForm(selectedCustomer);
+
+                // Subscribe to the AccountAdded event
+                addAccountForm.AccountAdded += AddAccountForm_AccountAdded;
+
+                addAccountForm.Show();
+            }
+            else
+            {
+                MessageBox.Show("Please select a customer first.");
+            }
+        }
+
+
+        private void panel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+
+
+        private void PopulateSelectedAccountComboBox(int customerId)
+        {
+            // Clear the combo box
+            comboSelectedAccount.Items.Clear();
+
+            // Get the list of accounts for the selected customer ID
+            List<Account> customerAccounts = controller.GetAccountsByCustomerId(customerId);
+
+            // Add each account's details to the combo box
+            foreach (Account account in customerAccounts)
+            {
+                string accountDetails = $"Account Number: {account.AccountId}, Type: {account.GetType().Name}";
+                comboSelectedAccount.Items.Add(accountDetails);
+            }
+        }
+
+
+        private void AddAccountForm_AccountAdded(object sender, EventArgs e)
+        {
+            // Get the selected customer
+            Customer selectedCustomer = (Customer)comboDisplayCustomers.SelectedItem;
+
+            // Repopulate the combo box of accounts for the selected customer
+            PopulateSelectedAccountComboBox(selectedCustomer.CustomerId);
+        }
+
+
     }
 }

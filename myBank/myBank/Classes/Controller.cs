@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using System.Windows.Forms;
 
@@ -10,7 +11,7 @@ namespace myBank.Classes
     {
         private List<Customer> customers;
         private string customersFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "customers.json");
-
+   
         public event EventHandler CustomersChanged;
 
         public Controller()
@@ -26,12 +27,51 @@ namespace myBank.Classes
                 string json = File.ReadAllText(customersFilePath);
                 customers = JsonSerializer.Deserialize<List<Customer>>(json);
                 Console.WriteLine("Customers loaded from JSON file.");
+
+                foreach (var customer in customers)
+                {
+                    customer.Accounts = LoadAccountsForCustomer(customer.CustomerId);
+                }
             }
+
             catch (FileNotFoundException)
             {
                 Console.WriteLine("Customers JSON file not found. No customers loaded.");
             }
         }
+
+        private List<Account> LoadAccountsForCustomer(int customerId)
+        {
+            List<Account> customerAccounts = new List<Account>();
+
+            try
+            {
+                // Read the JSON file containing accounts
+                string accountsFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "accounts.json");
+                string json = File.ReadAllText(accountsFilePath);
+
+                // Deserialize the JSON into a list of accounts
+                List<Account> allAccounts = JsonSerializer.Deserialize<List<Account>>(json);
+
+                // Iterate through all accounts
+                foreach (var account in allAccounts)
+                {
+                    // Check if the account's CustomerId matches the provided customer ID
+                    if (account.CustomerId == customerId)
+                    {
+                        // Add the account to the list of accounts associated with the customer
+                        customerAccounts.Add(account);
+                    }
+                }
+            }
+            catch (FileNotFoundException)
+            {
+                Console.WriteLine("Accounts JSON file not found.");
+            }
+
+            return customerAccounts;
+        }
+
 
         private void SaveCustomers()
         {
@@ -64,5 +104,24 @@ namespace myBank.Classes
             }
             Console.WriteLine("Customer list updated in ListBox.");
         }
+
+        public List<string> GetCustomerNames()
+        {
+            return customers.Select(customer => customer.Name).ToList();
+        }
+        public List<Customer> GetCustomers()
+        {
+            return customers;
+        }
+
+        public List<Account> GetAccountsByCustomerId(int customerId)
+        {
+            // Find the customer with the given ID
+            Customer customer = customers.FirstOrDefault(c => c.CustomerId == customerId);
+
+            // If the customer is found, return their accounts; otherwise, return an empty list
+            return customer != null ? customer.Accounts : new List<Account>();
+        }
+
     }
 }
