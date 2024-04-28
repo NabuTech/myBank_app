@@ -12,7 +12,7 @@ namespace myBank.Classes
         private static int nextCustomerId = 1;
 
         // Properties
-        public int CustomerId { get; }
+        public int CustomerId { get; set; }
         public string Name { get; set; }
         public string ContactDetails { get; set; }
 

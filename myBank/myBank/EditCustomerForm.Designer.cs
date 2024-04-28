@@ -161,6 +161,7 @@
             this.Controls.Add(this.label2);
             this.Name = "EditCustomerForm";
             this.Text = "EditCustomerForm";
+            this.Load += new System.EventHandler(this.EditCustomerForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

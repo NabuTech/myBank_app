@@ -53,5 +53,10 @@ namespace myBank
         {
             this.Close();
         }
+
+        private void EditCustomerForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -21,7 +21,11 @@ namespace myBank
             InitializeComponent();
             controller = new Controller();
             customers = new List<Customer>();
+
+            controller.UpdateCustomerListBox(listBoxCustomers);
         }
+
+        
 
         private void ShowAddCustomerForm(Controller controller, List<Customer> customers)
         {
