@@ -1,0 +1,14 @@
+﻿[
+  {
+    "CustomerId": 1,
+    "Name": "John Doe",
+    "ContactDetails": "john@example.com",
+    "IsStaff": false
+  },
+  {
+    "CustomerId": 2,
+    "Name": "Jane Smith",
+    "ContactDetails": "jane@example.com",
+    "IsStaff": true
+  }
+]

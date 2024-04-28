@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
+using System.Text.Json;
 using System.Windows.Forms;
 
 namespace myBank.Classes
@@ -11,22 +9,49 @@ namespace myBank.Classes
     public class Controller
     {
         private List<Customer> customers;
-        private List<Account> accounts;
+        private string customersFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "customers.json");
+
+        public event EventHandler CustomersChanged;
 
         public Controller()
         {
             customers = new List<Customer>();
-            accounts = new List<Account>();
+            LoadCustomers();
+        }
+
+        private void LoadCustomers()
+        {
+            try
+            {
+                string json = File.ReadAllText(customersFilePath);
+                customers = JsonSerializer.Deserialize<List<Customer>>(json);
+                Console.WriteLine("Customers loaded from JSON file.");
+            }
+            catch (FileNotFoundException)
+            {
+                Console.WriteLine("Customers JSON file not found. No customers loaded.");
+            }
+        }
+
+        private void SaveCustomers()
+        {
+            string json = JsonSerializer.Serialize(customers);
+            File.WriteAllText(customersFilePath, json);
+            Console.WriteLine("Customers saved to JSON file.");
         }
 
         public void AddCustomer(Customer customer)
         {
             customers.Add(customer);
+            SaveCustomers();
+            Console.WriteLine("Customer added: " + customer.Name);
         }
 
         public void DeleteCustomer(Customer customer)
         {
             customers.Remove(customer);
+            SaveCustomers();
+            Console.WriteLine("Customer deleted: " + customer.Name);
         }
 
         public void UpdateCustomerListBox(ListBox listBox)
@@ -37,96 +62,7 @@ namespace myBank.Classes
                 // Add Customer objects to the ListBox
                 listBox.Items.Add(customer);
             }
-        }
-
-        public void AddAccount(int customerId, Account account)
-        {
-            // Associate the account with the customer by setting its CustomerId property
-            // You need to implement the logic to retrieve the customer ID from the selected customer
-            // For now, you can directly pass the customer ID from the combo box
-            // account.CustomerId = customerId;
-            accounts.Add(account);
-        }
-
-        // Deposit method
-        public void Deposit(int accountId, decimal amount)
-        {
-            Account account = FindAccountById(accountId);
-            if (account != null)
-            {
-                account.Balance += amount;
-            }
-            else
-            {
-                Console.WriteLine("Account not found.");
-            }
-        }
-
-        // Withdraw method
-        public void Withdraw(int accountId, decimal amount)
-        {
-            Account account = FindAccountById(accountId);
-            if (account != null)
-            {
-                if (account.Balance >= amount)
-                {
-                    account.Balance -= amount;
-                }
-                else
-                {
-                    Console.WriteLine("Insufficient funds.");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Account not found.");
-            }
-        }
-
-        // Transfer method
-        public void Transfer(int sourceAccountId, int destinationAccountId, decimal amount)
-        {
-            Account sourceAccount = FindAccountById(sourceAccountId);
-            Account destinationAccount = FindAccountById(destinationAccountId);
-            if (sourceAccount != null && destinationAccount != null)
-            {
-                if (sourceAccount.Balance >= amount)
-                {
-                    sourceAccount.Balance -= amount;
-                    destinationAccount.Balance += amount;
-                }
-                else
-                {
-                    Console.WriteLine("Insufficient funds.");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Source or destination account not found.");
-            }
-        }
-
-        private Customer FindCustomerById(int customerId)
-        {
-            foreach (Customer customer in customers)
-            {
-                if (customer.CustomerId == customerId)
-                {
-                    return customer;
-                }
-            }
-            return null;
-        }
-        private Account FindAccountById(int accountId)
-        {
-            foreach (Account account in accounts)
-            {
-                if (account.AccountId == accountId)
-                {
-                    return account;
-                }
-            }
-            return null;
+            Console.WriteLine("Customer list updated in ListBox.");
         }
     }
 }
